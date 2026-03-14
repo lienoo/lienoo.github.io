@@ -205,6 +205,50 @@
     margin-top: 8px;
   }
 
+  .nvr-wechat-tip {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(15, 23, 42, 0.62);
+    backdrop-filter: blur(6px);
+  }
+
+  .nvr-wechat-tip.is-visible {
+    display: flex;
+  }
+
+  .nvr-wechat-card {
+    width: min(100%, 420px);
+    padding: 24px;
+    border-radius: 24px;
+    background: #fffdf8;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.24);
+  }
+
+  .nvr-wechat-card h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #0f172a;
+  }
+
+  .nvr-wechat-card p {
+    margin-bottom: 12px;
+    color: #475569;
+    line-height: 1.8;
+  }
+
+  .nvr-wechat-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 18px;
+  }
+
   @media (max-width: 640px) {
     .nvr-hero,
     .nvr-card {
@@ -217,6 +261,18 @@
     }
   }
 </style>
+
+<div id="nvr-wechat-tip" class="nvr-wechat-tip" role="dialog" aria-modal="true" aria-labelledby="nvr-wechat-title">
+  <div class="nvr-wechat-card">
+    <h2 id="nvr-wechat-title">请使用浏览器打开</h2>
+    <p>检测到你正在微信内打开此页面。微信内置浏览器通常会限制 APK 下载和安装，容易导致下载失败或无法正常唤起安装。</p>
+    <p>请点击右上角菜单，然后选择“在浏览器打开”后再继续下载。</p>
+    <div class="nvr-wechat-actions">
+      <button id="nvr-wechat-close" class="nvr-button nvr-button-secondary" type="button">我知道了</button>
+      <a class="nvr-button nvr-button-primary" href="https://lienoo.github.io/nvrclient/download/" target="_blank" rel="noopener">重新打开页面</a>
+    </div>
+  </div>
+</div>
 
 <div class="nvr-download-page">
   <section class="nvr-hero">
@@ -264,6 +320,26 @@
     <p>如果下载、安装或登录过程中遇到问题，请前往 <a href="/support/">技术支持页面</a>，或发送邮件至 <a href="mailto:taian0755@126.com">taian0755@126.com</a>。</p>
   </section>
 </div>
+
+<script>
+  (function () {
+    const wechatTip = document.getElementById('nvr-wechat-tip');
+    const wechatClose = document.getElementById('nvr-wechat-close');
+
+    if (!wechatTip || !wechatClose) {
+      return;
+    }
+
+    const isWeChatBrowser = /MicroMessenger/i.test(window.navigator.userAgent || '');
+    if (isWeChatBrowser) {
+      wechatTip.classList.add('is-visible');
+    }
+
+    wechatClose.addEventListener('click', function () {
+      wechatTip.classList.remove('is-visible');
+    });
+  })();
+</script>
 
       
     </div>
